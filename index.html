@@ -1493,11 +1493,15 @@
       audioBtn.innerText = soundMgr.muted ? '🔇' : '🔊';
     });
 
+    // Load the best score in the background, but don't let it block gameReady.
+    // gameReady must fire as soon as the game is actually playable, regardless
+    // of whether the save-data fetch is slow or fails.
     YTPlayablesSDK.loadBestScore((score) => {
       bestHeightMeters = score;
       modalBest.innerText = bestHeightMeters.toFixed(1) + "m";
-      YTPlayablesSDK.notifyGameReady();
     });
+
+    YTPlayablesSDK.notifyGameReady();
 
     requestAnimationFrame(gameLoop);
   </script>
